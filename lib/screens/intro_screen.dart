@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sneaker_shop/screens/home_screen.dart';
 
-class IntroPage extends StatelessWidget {
-  const IntroPage({super.key});
+class IntroScreen extends StatelessWidget {
+  const IntroScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
