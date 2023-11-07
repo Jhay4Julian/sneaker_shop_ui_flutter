@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sneaker_shop/models/shoe.dart';
 
 import '../components/shoe_tile.dart';
+import '../models/cart.dart';
 
-class ShopScreen extends StatelessWidget {
+class ShopScreen extends StatefulWidget {
   const ShopScreen({super.key});
 
   @override
+  State<ShopScreen> createState() => _ShopScreenState();
+}
+
+class _ShopScreenState extends State<ShopScreen> {
+  // add shoe to cart
+  void addShoeToCart(Shoe shoe) {
+    Provider.of<Cart>(context, listen: false).addItemToCart(shoe);
+
+    // alert user of addition to cart
+    showDialog(
+      context: context,
+      builder: (context) => const AlertDialog(
+        title: Text('Added to Cart!'),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      body: Column(
+    return Consumer<Cart>(
+      builder: (context, value, child) => Column(
         children: [
           // search bar
           Container(
@@ -37,7 +56,7 @@ class ShopScreen extends StatelessWidget {
 
           // message
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 26),
+            padding: const EdgeInsets.symmetric(vertical: 25),
             child: Text(
               'The best... Only the best!',
               style: TextStyle(color: Colors.grey[600]),
@@ -57,7 +76,10 @@ class ShopScreen extends StatelessWidget {
                 ),
                 Text(
                   'See all',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      color: Colors.blue),
                 ),
               ],
             ),
@@ -65,19 +87,18 @@ class ShopScreen extends StatelessWidget {
 
           const SizedBox(height: 20),
 
+          // shoes list display
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 5,
               itemBuilder: (context, index) {
-                // Create a shoe
-                Shoe shoe = Shoe(
-                    name: "OZWEEGO",
-                    price: '120',
-                    description: "dope kick",
-                    imagePath: "assets/images/ozweego.png");
+                // get the shoe list
+                Shoe shoe = value.getShoeList()[index];
+                // return shoe list
                 return ShoeTile(
                   shoe: shoe,
+                  onPressed: () => addShoeToCart(shoe),
                 );
               },
             ),
