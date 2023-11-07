@@ -5,13 +5,14 @@ import '../models/shoe.dart';
 // ignore: must_be_immutable
 class ShoeTile extends StatelessWidget {
   Shoe shoe;
-  ShoeTile({super.key, required this.shoe});
+  void Function()? onPressed;
+  ShoeTile({super.key, required this.shoe, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 20),
-      width: 250,
+      width: 260,
       decoration: BoxDecoration(
         color: Colors.grey[100],
         borderRadius: BorderRadius.circular(10),
@@ -30,7 +31,7 @@ class ShoeTile extends StatelessWidget {
 
           // // details + price
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
@@ -40,6 +41,7 @@ class ShoeTile extends StatelessWidget {
                   children: [
                     Text(
                       shoe.name,
+                      overflow: TextOverflow.clip,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -68,7 +70,7 @@ class ShoeTile extends StatelessWidget {
                   ),
                 ),
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: onPressed,
                     icon: const Icon(
                       Icons.add,
                       color: Colors.white,
